@@ -30,23 +30,24 @@ func readAddressDword(pid int, address uintptr) (int32) {
     return int32(binary.LittleEndian.Uint32(data))
 }
 
-func readAddressFloat(pid int, address uintptr) (float32, error) {
+func readAddressFloat(pid int, address uintptr) (float32) {
     memPath := fmt.Sprintf("/proc/%d/mem", pid)
     handle, err := syscall.Open(memPath, syscall.O_RDONLY, 0)
     if err != nil {
-        return 0, err
+        return 0
     }
     defer syscall.Close(handle)
 
     data := make([]byte, 4)
     _, _, errno := syscall.Syscall6(syscall.SYS_PREAD64, uintptr(handle), uintptr(unsafe.Pointer(&data[0])), 4, address, 0, 0)
     if errno != 0 {
-        return 0, errno
+        return 0
     }
 
     bits := binary.LittleEndian.Uint32(data)
-    return math.Float32frombits(bits), nil
+    return math.Float32frombits(bits)
 }
+
 func writeAddressDword(pid int, address uintptr, value int32) error {
     memPath := fmt.Sprintf("/proc/%d/mem", pid)
     handle, err := syscall.Open(memPath, syscall.O_RDWR, 0)
