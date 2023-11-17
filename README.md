@@ -65,7 +65,7 @@ int: PID
 ## Usage
 
 ```go
-import "https://github.com/heinu123/memory"
+import "github.com/heinu123/memory"
 ```
 ```go
     pid := memory.GetPID("exampleProcess")
