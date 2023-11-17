@@ -13,7 +13,7 @@ import (
     "encoding/binary"
 )
 
-func readAddressDword(pid int, address uintptr) (int32) {
+func ReadAddressDword(pid int, address uintptr) (int32) {
     memPath := fmt.Sprintf("/proc/%d/mem", pid)
     handle, err := syscall.Open(memPath, syscall.O_RDONLY, 0)
     if err != nil {
@@ -30,7 +30,7 @@ func readAddressDword(pid int, address uintptr) (int32) {
     return int32(binary.LittleEndian.Uint32(data))
 }
 
-func readAddressFloat(pid int, address uintptr) (float32) {
+func ReadAddressFloat(pid int, address uintptr) (float32) {
     memPath := fmt.Sprintf("/proc/%d/mem", pid)
     handle, err := syscall.Open(memPath, syscall.O_RDONLY, 0)
     if err != nil {
@@ -48,7 +48,7 @@ func readAddressFloat(pid int, address uintptr) (float32) {
     return math.Float32frombits(bits)
 }
 
-func writeAddressDword(pid int, address uintptr, value int32) error {
+func WriteAddressDword(pid int, address uintptr, value int32) error {
     memPath := fmt.Sprintf("/proc/%d/mem", pid)
     handle, err := syscall.Open(memPath, syscall.O_RDWR, 0)
     if err != nil {
@@ -67,7 +67,7 @@ func writeAddressDword(pid int, address uintptr, value int32) error {
     return nil
 }
 
-func writeAddressFloat(pid int, address uintptr, value float32) error {
+func WriteAddressFloat(pid int, address uintptr, value float32) error {
     memPath := fmt.Sprintf("/proc/%d/mem", pid)
     handle, err := syscall.Open(memPath, syscall.O_RDWR, 0)
     if err != nil {
@@ -87,7 +87,7 @@ func writeAddressFloat(pid int, address uintptr, value float32) error {
     return nil
 }
 
-func getModuleBase(pid int, moduleName string) uint64 {
+func GetModuleBase(pid int, moduleName string) uint64 {
     filename := fmt.Sprintf("/proc/%d/maps", pid)
     content, err := ioutil.ReadFile(filename)
     if err != nil {
@@ -113,7 +113,7 @@ func getModuleBase(pid int, moduleName string) uint64 {
     return 0
 }
 
-func getPID(packageName string) int {
+func GetPID(packageName string) int {
     dir, err := os.Open("/proc")
     if err != nil {
         return 0
